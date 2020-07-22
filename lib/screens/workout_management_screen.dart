@@ -47,7 +47,7 @@ class _WorkoutManagementScreenState extends State<WorkoutManagementScreen> {
     if (valid && _dropDownValid) {
       _form.currentState.save();
       _workout.weekDay = _dropDownValue;
-      Provider.of<WorkoutProvider>(context).add(_workout);
+      Provider.of<WorkoutProvider>(context, listen: false).add(_workout);
     } else {
       print('Formulário INválido');
     }
