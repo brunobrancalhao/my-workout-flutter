@@ -5,6 +5,8 @@ import '../widgets/today_workout.dart';
 import '../utils/Utils.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const route = '/';
+
   List<FlatButton> _getButtonBar() {
     List<FlatButton> _list = [];
     for (int i = 1; i < 8; i++) {

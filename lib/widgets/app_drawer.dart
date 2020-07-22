@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../screens/home_screen.dart';
+import '../screens/workout_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -14,7 +16,7 @@ class AppDrawer extends StatelessWidget {
                 color: Theme.of(context).accentColor,
               ),
               title: Text('Home'),
-              onTap: () => print('Home'),
+              onTap: () => Navigator.of(context).pushNamed(HomeScreen.route),
             ),
             ListTile(
               leading: Icon(
@@ -22,7 +24,8 @@ class AppDrawer extends StatelessWidget {
                 color: Theme.of(context).accentColor,
               ),
               title: Text('Treinos'),
-              onTap: () => print('Treinos'),
+              onTap: () => Navigator.of(context)
+                  .pushNamed(WorkoutScreen.route, arguments: 100),
             ),
           ],
         ),
