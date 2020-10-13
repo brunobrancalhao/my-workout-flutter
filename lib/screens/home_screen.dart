@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
         FlatButton(
           onPressed: () => print('Botão $i'),
           child: Text(
-            Utils.getWeekdayName(i),
+            Utils.getWeekdayName(i).substring(0, 3),
           ),
         ),
       );

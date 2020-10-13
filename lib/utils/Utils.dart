@@ -1,13 +1,13 @@
 class Utils {
   static String getWeekdayName(int day) {
     Map<int, String> weekDayMap = {
-      1: 'Seg',
-      2: 'Ter',
-      3: 'Qua',
-      4: 'Qui',
-      5: 'Sex',
-      6: 'Sab',
-      7: 'Dom',
+      1: 'Segunda-Feira',
+      2: 'Terça-Feira',
+      3: 'Quarta-Feira',
+      4: 'Quinta-Feira',
+      5: 'Sexta',
+      6: 'Sábado',
+      7: 'Domingo',
     };
 
     return weekDayMap[day];
