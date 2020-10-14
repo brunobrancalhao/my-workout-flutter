@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import './workout_management_screen.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/workout_card.dart';
-import '../providers/workout_providers.dart';
+import '../providers/workout_provider.dart';
 
 class WorkoutScreen extends StatelessWidget {
   static const route = '/workout';
@@ -43,6 +43,7 @@ class WorkoutScreen extends StatelessWidget {
                       itemCount: snapshot.data.length,
                       itemBuilder: (_, index) {
                         return WorkoutCard(
+                          snapshot.data[index].id,
                           snapshot.data[index].imageUrl,
                           snapshot.data[index].name,
                           snapshot.data[index].weekDay,

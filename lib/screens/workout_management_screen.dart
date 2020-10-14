@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../models/workout.dart';
 
-import '../providers/workout_providers.dart';
+import '../providers/workout_provider.dart';
 
 class WorkoutManagementScreen extends StatefulWidget {
   static const String route = '/workout-management';
@@ -48,15 +48,53 @@ class _WorkoutManagementScreenState extends State<WorkoutManagementScreen> {
     if (valid && _dropDownValid) {
       _form.currentState.save();
       _workout.weekDay = _dropDownValue;
-      await Provider.of<WorkoutProvider>(context, listen: false).add(_workout);
+      if (_workout.id != null) {
+        await Provider.of<WorkoutProvider>(context, listen: false)
+            .update(_workout);
+      } else {
+        await Provider.of<WorkoutProvider>(context, listen: false)
+            .add(_workout);
+      }
       Navigator.of(context).pop();
     }
+  }
+
+  void _delete() async {
+    Navigator.of(context).pop();
+    await Provider.of<WorkoutProvider>(context, listen: false)
+        .delete(_workout.id);
+    Navigator.of(context).pop();
+  }
+
+  void _showConfirmationModal() {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+              title: Text('Você tem certeza?'),
+              content: Text('Esta ação não poderá ser desfeita!'),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Cancelar'),
+                ),
+                FlatButton(onPressed: _delete, child: Text('Sim continuar'))
+              ]);
+        });
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (isInit) {}
+    if (isInit) {
+      final Map<String, Object> arguments =
+          ModalRoute.of(context).settings.arguments;
+      if (arguments['id'] != null) {
+        _workout = Provider.of<WorkoutProvider>(context, listen: false)
+            .getById(arguments['id']);
+        _dropDownValue = _workout.weekDay;
+      }
+    }
     isInit = false;
   }
 
@@ -68,6 +106,12 @@ class _WorkoutManagementScreenState extends State<WorkoutManagementScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(arguments['title']),
+        actions: _workout.id != null
+            ? <Widget>[
+                IconButton(
+                    icon: Icon(Icons.delete), onPressed: _showConfirmationModal)
+              ]
+            : [],
       ),
       extendBodyBehindAppBar: true,
       body: Stack(

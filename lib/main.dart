@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_workout/providers/exercise_provider.dart';
 import 'package:provider/provider.dart';
 
 import './screens/exercise_management_screen.dart';
@@ -7,7 +8,8 @@ import './screens/workout_management_screen.dart';
 import './screens/home_screen.dart';
 import './screens/workout_screen.dart';
 
-import './providers/workout_providers.dart';
+import 'providers/workout_provider.dart';
+import './providers/exercise_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,8 +18,11 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => WorkoutProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => WorkoutProvider()),
+        ChangeNotifierProvider(create: (_) => ExerciseProvider()),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -68,6 +73,13 @@ class MyApp extends StatelessWidget {
           ),
           cursorColor: Color.fromRGBO(0, 223, 100, 1),
           textSelectionHandleColor: Color.fromRGBO(0, 223, 100, 1),
+          dialogBackgroundColor: Color.fromRGBO(29, 34, 37, 1),
+          dialogTheme: DialogTheme(
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: Theme.of(context).textTheme.headline6.fontSize,
+            ),
+          ),
         ),
         routes: {
           HomeScreen.route: (_) => HomeScreen(),

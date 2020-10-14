@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/exercise_management_screen.dart';
+import '../widgets/exercise_card.dart';
+
+import '../providers/exercise_provider.dart';
 
 class ExerciseScreen extends StatelessWidget {
   static const String route = '/exercise';
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, Object> arguments =
+        ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Exercícios cadastrados'),
@@ -29,30 +36,21 @@ class ExerciseScreen extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 85),
-            child: Card(
-              child: ListTile(
-                title: Text(
-                  '60 minutos de corrida',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(
-                  'Manter velocidade constante de corrida por 60 minutos',
-                  style: TextStyle(
-                    color: Theme.of(context).textTheme.subtitle2.color,
-                  ),
-                ),
-                leading: Image.network(
-                  'https://img.icons8.com/bubbles/2x/timer.png',
-                  height: 50,
-                  width: 50,
-                  fit: BoxFit.cover,
-                ),
-                trailing: IconButton(icon: Icon(Icons.delete), onPressed: null),
-              ),
-            ),
-          ),
+          FutureBuilder(
+              future: Provider.of<ExerciseProvider>(context)
+                  .get(arguments['workoutId']),
+              builder: (_, snapshot) {
+                return snapshot.connectionState == ConnectionState.done
+                    ? ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (_, index) {
+                          return ExerciseCard(
+                              snapshot.data[index].name,
+                              snapshot.data[index].description,
+                              snapshot.data[index].imageUrl);
+                        })
+                    : CircularProgressIndicator();
+              }),
         ],
       ),
     );
